@@ -1,17 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<link rel=stylesheet href="style.css">
-<title>👁️Human Tracking Robot👁️</title>
+  <meta charset="UTF-8" />
+  <title>Creepy Eyes Tracking System – Project Showcase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #050816;
+      color: #f9fafb;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(5, 8, 22, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      color: #38bdf8;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #14b8a6);
+      color: #020617;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 35px rgba(16, 185, 129, 0.35);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.8fr);
+      gap: 2.5rem;
+      align-items: center;
+      padding-top: 2rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 3.1vw, 2.6rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      color: #cbd5f5;
+      font-size: 0.98rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-ghost {
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.9rem;
+      background: rgba(15, 23, 42, 0.8);
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      border-color: #38bdf8;
+      color: #e5e7eb;
+    }
+
+    .hero-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      margin-top: 0.75rem;
+    }
+
+    .pill-highlight {
+      padding: 0.45rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.75);
+      text-align: center;
+      color: #e5e7eb;
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 60%);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.9);
+      width: fit-content;
+    }
+
+    .hero-caption {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* Sections */
+    section {
+      padding: 2.1rem 0 1.4rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    h2.section-title {
+      font-size: 1.35rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-tagline {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 1.2rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .card {
+      border-radius: 1rem;
+      padding: 1rem 1.2rem;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.9rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      color: #e5e7eb;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: #d1d5db;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .list-dot li::before {
+      content: "•";
+      margin-right: 0.4rem;
+      color: #38bdf8;
+    }
+
+    .list-dot li {
+      margin-bottom: 0.25rem;
+      font-size: 0.88rem;
+      color: #e5e7eb;
+    }
+
+    /* Results grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .eyes {
+      height: 10px;
+    }
+    img#eyesImg {
+      width: 100%;
+    }
+
+    .result-item span {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+    }
+
+    .result-item p {
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+
+    /* Team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .team-card {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      font-size: 0.9rem;
+    }
+
+    .team-role {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
+    }
+
+    .team-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .team-note {
+      font-size: 0.82rem;
+      color: #d1d5db;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.4rem 1.25rem 2.2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      font-size: 0.8rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: #38bdf8;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .results-grid,
+      .team-grid,
+      .hero-highlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      nav ul {
+        display: none;
+      }
+      .results-grid,
+      .team-grid,
+      .hero-highlights {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      main {
+        padding-inline: 1rem;
+      }
+      .nav-container {
+        padding-inline: 1rem;
+      }
+    }
+    #howImg {
+      object-fit: scale-down;
+      width: 100%;
+      border-radius: 10px;
+    }
+    #video {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-<div id="Nav"><span>Home</span><span id="Space"></span><span>Specifications</span><span>Renders</span><span>Cinematic</span></div>
-<div id="SplashScreen">
-    <div id="SplashText">
-        <h1><b>Human Tracking Robot with Eyes</b></h1>
-        <h3>by Alex Duffield, Saxon Hays and James Kassis</h3>
-    </div>
-    <img src="/SkullTransparent.png">
-</div>
-<div id="Product Specifications">
 
-</div>
+  <header>
+    <div class="nav-container">
+      <div class="logo">Creepy Eyes Tracking System</div>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#team">Team</a></li>
+        </ul>
+      </nav>
+      <a href="#results" class="btn-primary">View Results</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          <span>Engineering Design Project</span>
+        </div>
+        <h1>
+          Human-Tracking <span>Creepy Eyes</span>  
+          for Interactive Installations
+        </h1>
+        <p class="hero-subtitle">
+          An Arduino-based eye-tracking system using ultrasonic sensing, dual servos, and RGB LEDs
+          to follow human movement and create a responsive, animated “creepy eyes” effect.
+        </p>
+        <p class="hero-meta">
+          Developed by: Alex (Team Leader) · Saxon (Electronics & Coding) · James (Design & Structures)
+        </p>
+        <div class="hero-buttons">
+          <a href="#about" class="btn-primary">What is this device?</a>
+          <a href="#how" class="btn-ghost">How it works</a>
+        </div>
+
+        <div class="hero-highlights">
+          <div class="pill-highlight">Stable servo tracking with smoothing</div>
+          <div class="pill-highlight">Reliable left/right ultrasonic detection</div>
+          <div class="pill-highlight">Finalised circuit & internal layout</div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div id="eyes">
+          <img src="/SkullTransparent.png" id="eyesImg">
+        </div>
+        <div class="sensor-bar"></div>
+        <p class="hero-caption">
+          3D Rendering of Product with eyes in red detected mode.
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 class="section-title">About the Design</h2>
+      <p class="section-tagline">
+        Communicating the engineering intent behind the system.
+        <video controls loop autoplay id="video" width="400px">
+          <source src="/video.mp4" type="video/mp4">
+        </video>
+      </p>
+      <div class="two-col">
+        <div>
+          <p style="margin-bottom:0.7rem; font-size:0.92rem;">
+            The Creepy Eyes Tracking System is an interactive device designed for use in 
+            Halloween props, museum exhibits, or playful public installations. The system 
+            detects a person’s position using ultrasonic sensors and rotates a pair of eyes 
+            to “look at” the target in real time.
+          </p>
+          <p style="margin-bottom:0.7rem; font-size:0.92rem;">
+            The design emphasises:
+          </p>
+          <ul class="list-dot">
+            <li>Stable and smooth tracking using a software smoothing function.</li>
+            <li>Robust ultrasonic distance readings with left/right comparison logic.</li>
+            <li>Clear visual feedback with RGB LED colour states.</li>
+            <li>A compact internal 3D structure that securely mounts all components.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Key Week-6 Achievements</h3>
+          <ul class="list-dot" style="margin-top:0.5rem;">
+            <li>Updated circuit diagram and wiring layout.</li>
+            <li>Finalised Arduino control code for servos, sensors, and LEDs.</li>
+            <li>Servo jitter reduced using exponential smoothing.</li>
+            <li>Preliminary internal 3D structure completed and reviewed.</li>
+            <li>FMEA updated using real test data.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results">
+      <h2 class="section-title">Results & Performance</h2>
+      <p class="section-tagline">
+        Core functionality is now complete and ready for Week-7 refinement.
+      </p>
+
+      <div class="results-grid">
+        <div class="card result-item">
+          <span>Tracking Behaviour</span>
+          <p>
+            Servos now follow user movement smoothly, with significantly reduced jitter 
+            thanks to a 0.1-factor smoothing function applied to the target angle.
+          </p>
+        </div>
+        <div class="card result-item">
+          <span>Detection Reliability</span>
+          <p>
+            Dual ultrasonic sensors successfully discriminate left vs right presence.
+            A “dead-zone” threshold prevents eye flickering when distances are similar.
+          </p>
+        </div>
+        <div class="card result-item">
+          <span>Visual Feedback</span>
+          <p>
+            RGB LEDs indicate system state: red during tracking and green when no 
+            person is detected within range, improving user understanding.
+          </p>
+        </div>
+        <div class="card result-item">
+          <span>Structural Integration</span>
+          <p>
+            Preliminary 3D layout validates servo spacing, eye mounting, and wiring 
+            paths for a compact and manufacturable enclosure.
+          </p>
+        </div>
+        <div class="card result-item">
+          <span>Testing Approach</span>
+          <p>
+            Real-world tests simulated human movement at different distances and 
+            sides, feeding directly into FMEA updates and design improvements.
+          </p>
+        </div>
+        <div class="card result-item">
+          <span>Readiness</span>
+          <p>
+            With electronics, code, and structure aligned, the system is ready for 
+            Week-7: extended testing, enclosure refinement, and final presentation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-tagline">
+        From ultrasonic distance readings to expressive servo motion.
+      </p>
+      <img src="/Group Project Stage 3.png" id="howImg">
+      <div class="two-col">
+        <div>
+          <div class="card" style="margin-bottom:1rem;">
+            <h3>Control Logic</h3>
+            <p>
+              An Arduino reads distance data from two ultrasonic sensors. A custom 
+              function <code>facingDir()</code> compares left and right readings and 
+              chooses one of four states:
+            </p>
+            <ul class="list-dot" style="margin-top:0.45rem;">
+              <li><b>Centre (0):</b> distances are similar &rarr; eyes look straight.</li>
+              <li><b>Left (1):</b> object closer on left &rarr; eyes rotate left.</li>
+              <li><b>Right (2):</b> object closer on right &rarr; eyes rotate right.</li>
+              <li><b>No Target (3):</b> both sensors out of range &rarr; LEDs turn green.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Smoothing & Motion</h3>
+            <p style="margin-bottom:0.4rem;">
+              Instead of jumping directly to the new angle, the system uses:
+            </p>
+            <pre style="font-size:0.78rem; background:#020617; padding:0.4rem 0.6rem; border-radius:0.5rem; overflow-x:auto;">
+smoothIt(&servoSmoothedValue, value);
+servoL.write(servoSmoothedValue);
+servoR.write(servoSmoothedValue);
+            </pre>
+            <p>
+              This exponential smoothing (10% of the difference per loop) creates 
+              natural, eye-like motion rather than mechanical snapping.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:1rem;">
+            <h3>Hardware Overview</h3>
+            <ul class="list-dot" style="margin-top:0.4rem;">
+              <li>Microcontroller: Arduino (project prototype board).</li>
+              <li>Two ultrasonic sensors for left/right distance measurement.</li>
+              <li>Two servos to control the eye direction simultaneously.</li>
+              <li>RGB LED strip (Neopixel) for system state indication.</li>
+              <li>Custom 3D internal frame for mounting and cable routing.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>System Engineering Techniques</h3>
+            <ul class="list-dot" style="margin-top:0.4rem;">
+              <li>Modular testing of sensors, servos, and LEDs before integration.</li>
+              <li>Incremental integration to isolate and fix issues early.</li>
+              <li>Real-world scenario testing with human movement paths.</li>
+              <li>FMEA updated weekly using test outcomes from Week-6.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team">
+      <h2 class="section-title">Meet the Team</h2>
+      <p class="section-tagline">
+        Roles, responsibilities, and Week-6 contributions.
+      </p>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-role">Team Leader</div>
+          <div class="team-name">Alex Duffield</div>
+          <div class="team-note">
+            Coordinated project direction, synthesised Week-6 technical work into this report,
+            and oversaw design decisions despite limited on-site availability.
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-role">Electronics & Coding Lead</div>
+          <div class="team-name">Saxon</div>
+          <div class="team-note">
+            Implemented and refined Arduino code, stabilised servo motion, tuned ultrasonic
+            detection, and verified LED behaviour.
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-role">Design & Structures Lead</div>
+          <div class="team-name">James</div>
+          <div class="team-note">
+            Developed the internal 3D structure, reviewed servo and sensor placement, and
+            ensured mechanical stability and wiring pathways.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      &copy; 2025 Creepy Eyes Tracking System – Engineering Design Project.
+    </div>
+    <div>
+      Prepared for Week-6: Results communication & design promotion.
+    </div>
+  </footer>
+
 </body>
+</html>
